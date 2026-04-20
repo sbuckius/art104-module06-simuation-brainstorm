@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Speculative Art Simulation Worksheet</title>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@300;400;600&display=swap');
+
+  :root {
+    --bg: #0e0d0b;
+    --surface: #16140f;
+    --surface2: #1e1b14;
+    --border: #2e2b22;
+    --accent: #c8a96e;
+    --accent2: #7ec8a9;
+    --accent3: #c87ea9;
+    --text: #e8e0d0;
+    --text-muted: #8a8070;
+    --input-bg: #12110d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* Grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  .page-wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 40px 100px;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 40px;
+    margin-bottom: 50px;
+  }
+
+  .header-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .header-tag::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 400;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .header-subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 300;
+    max-width: 520px;
+    line-height: 1.8;
+  }
+
+  /* Sections */
+  .section {
+    margin-bottom: 44px;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    padding-left: 2px;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .section-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    line-height: 1.8;
+  }
+
+  /* Artist Assignment Block */
+  .assignment-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 24px 28px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .assignment-block h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .links-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  @media (max-width: 600px) {
+    .links-grid { grid-template-columns: 1fr; }
+    .page-wrapper { padding: 30px 20px 80px; }
+  }
+
+  .link-item {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 10px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    transition: border-color 0.2s;
+  }
+
+  .link-item:hover { border-color: var(--accent); }
+
+  .link-item .link-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+  }
+
+  .link-item a {
+    color: var(--accent2);
+    font-size: 12px;
+    text-decoration: none;
+    word-break: break-all;
+    line-height: 1.5;
+    transition: color 0.2s;
+  }
+
+  .link-item a:hover { color: var(--accent); text-decoration: underline; }
+
+  .link-item .artist-name {
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* Group Info Row */
+  .group-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  @media (max-width: 600px) { .group-row { grid-template-columns: 1fr; } }
+
+  /* Inputs */
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  input[type="text"], textarea, select {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    padding: 10px 14px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    appearance: none;
+  }
+
+  input[type="text"]:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--accent);
+    background: #191710;
+  }
+
+  /* Textareas auto-grow to content */
+  textarea {
+    resize: none;
+    overflow: hidden;
+    min-height: 90px;
+    line-height: 1.7;
+    height: auto;
+  }
+
+  textarea.tall { min-height: 130px; }
+
+  select option {
+    background: #1e1b14;
+  }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 44px 0;
+    position: relative;
+  }
+
+  .divider::after {
+    content: attr(data-label);
+    position: absolute;
+    top: -10px;
+    left: 0;
+    background: var(--bg);
+    padding-right: 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Diagram */
+  .diagram-wrapper {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 32px 28px;
+    margin-bottom: 40px;
+  }
+
+  .diagram-wrapper h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  .diagram {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .diagram-node {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 16px;
+    min-width: 160px;
+    text-align: center;
+    position: relative;
+  }
+
+  .diagram-node .node-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+  }
+
+  .diagram-node .node-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed var(--border);
+    border-radius: 0;
+    padding: 4px 0;
+    text-align: center;
+    font-size: 13px;
+    color: var(--text);
+    width: 100%;
+  }
+
+  .diagram-node .node-input:focus {
+    border-bottom-color: var(--accent);
+    background: transparent;
+    outline: none;
+  }
+
+  .diagram-node.accent-node {
+    border-color: var(--accent);
+    background: rgba(200, 169, 110, 0.06);
+  }
+
+  .diagram-node.teal-node {
+    border-color: var(--accent2);
+    background: rgba(126, 200, 169, 0.06);
+  }
+
+  .diagram-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 12px;
+    gap: 2px;
+  }
+
+  .diagram-arrow .arrow-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: center;
+    max-width: 80px;
+    line-height: 1.4;
+    margin-bottom: 2px;
+  }
+
+  .arrow-line {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  .arrow-shaft {
+    width: 40px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .arrow-head {
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 8px solid var(--accent);
+  }
+
+  /* Plus symbol between nodes */
+  .diagram-plus {
+    font-size: 20px;
+    color: var(--text-muted);
+    padding: 0 8px;
+    line-height: 1;
+    align-self: center;
+    padding-top: 14px; /* offset for label space */
+  }
+
+  /* Observation / checklist */
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .check-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .check-item input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    accent-color: var(--accent);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .check-item .check-label {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* Rating */
+  .rating-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .rating-btn {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .rating-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .rating-btn.selected { border-color: var(--accent); color: var(--accent); background: rgba(200,169,110,0.1); }
+
+  /* Export button */
+  .toolbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(14,13,11,0.96);
+    border-top: 1px solid var(--border);
+    padding: 16px 40px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 16px;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+  }
+
+  .save-indicator {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    transition: color 0.3s;
+  }
+
+  .save-indicator.saved { color: var(--accent2); }
+
+  .btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 3px;
+    padding: 10px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #0e0d0b;
+    border-color: var(--accent);
+  }
+
+  .btn-primary:hover {
+    background: #d4b87a;
+    border-color: #d4b87a;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+    border-color: var(--border);
+  }
+
+  .btn-ghost:hover {
+    color: var(--text);
+    border-color: var(--text-muted);
+  }
+
+  /* Print / PDF styles */
+  @media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    body {
+      background: #ffffff !important;
+      color: #111111 !important;
+      font-size: 12px !important;
+    }
+
+    body::before { display: none !important; }
+
+    .toolbar { display: none !important; }
+
+    .page-wrapper {
+      max-width: 100% !important;
+      padding: 20px 24px 40px !important;
+    }
+
+    /* Override all CSS variables for print */
+    :root {
+      --bg: #ffffff !important;
+      --surface: #f5f4f0 !important;
+      --surface2: #eeede8 !important;
+      --border: #cccccc !important;
+      --accent: #7a5c2e !important;
+      --accent2: #2e7a5c !important;
+      --text: #111111 !important;
+      --text-muted: #555555 !important;
+      --input-bg: #f9f8f5 !important;
+    }
+
+    h1 { font-size: 28px !important; color: #111 !important; }
+    h1 em { color: #7a5c2e !important; }
+    .header-tag { color: #7a5c2e !important; }
+    .header-tag::before { background: #7a5c2e !important; }
+    .header-subtitle { color: #555 !important; }
+
+    .header {
+      border-bottom: 1px solid #ccc !important;
+      margin-bottom: 24px !important;
+      padding-bottom: 20px !important;
+    }
+
+    .section-label { color: #555 !important; }
+    .section-title { color: #111 !important; font-size: 16px !important; }
+    .section-desc { color: #555 !important; }
+
+    .assignment-block {
+      background: #f5f4f0 !important;
+      border: 1px solid #ccc !important;
+      border-left: 3px solid #7a5c2e !important;
+      break-inside: avoid;
+    }
+
+    .assignment-block h2 { color: #7a5c2e !important; }
+
+    .link-item {
+      background: #f9f8f5 !important;
+      border: 1px solid #ccc !important;
+    }
+
+    .link-item .artist-name { color: #111 !important; }
+    .link-item .link-num { color: #555 !important; }
+    .link-item a { color: #2e5c7a !important; }
+
+    input[type="text"],
+    input[type="text"].node-input,
+    textarea,
+    select {
+      background: #ffffff !important;
+      border: 1px solid #aaaaaa !important;
+      color: #111111 !important;
+      -webkit-appearance: none !important;
+      height: auto !important;
+      min-height: 0 !important;
+      max-height: none !important;
+      overflow: visible !important;
+      white-space: pre-wrap !important;
+      word-break: break-word !important;
+    }
+
+    .diagram-wrapper {
+      background: #f5f4f0 !important;
+      border: 1px solid #ccc !important;
+      break-inside: avoid;
+    }
+
+    .diagram-node {
+      background: #f9f8f5 !important;
+      border: 1px solid #ccc !important;
+    }
+
+    .diagram-node.accent-node {
+      border-color: #7a5c2e !important;
+      background: #fdf8f0 !important;
+    }
+
+    .diagram-node.teal-node {
+      border-color: #2e7a5c !important;
+      background: #f0fdf8 !important;
+    }
+
+    .diagram-node .node-label { color: #555 !important; }
+    .diagram-node .node-input {
+      border-bottom: 1px solid #aaa !important;
+      color: #111 !important;
+    }
+
+    .arrow-shaft { background: #7a5c2e !important; }
+    .arrow-head { border-left-color: #7a5c2e !important; }
+    .arrow-label { color: #555 !important; }
+    .diagram-plus { color: #555 !important; }
+
+    .divider { border-top: 1px solid #ccc !important; }
+
+    .check-item input[type="checkbox"] { accent-color: #7a5c2e !important; }
+    .check-item .check-label { color: #111 !important; }
+
+    .rating-btn {
+      background: #f5f4f0 !important;
+      border: 1px solid #ccc !important;
+      color: #555 !important;
+    }
+
+    .rating-btn.selected {
+      border-color: #7a5c2e !important;
+      color: #7a5c2e !important;
+      background: #fdf8f0 !important;
+    }
+
+    .section { break-inside: avoid; margin-bottom: 24px !important; }
+    .field { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrapper" id="worksheet">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-tag">Group Worksheet</div>
+    <h1>Speculative Art<br><em>Simulation Studio</em></h1>
+    <p class="header-subtitle">You already have your speculative artwork idea. Browse the artist list, pick one whose approach feels useful, and use their techniques to figure out how you'd simulate your piece.</p>
+  </div>
+
+  <!-- Group Info -->
+  <div class="section">
+    <div class="section-label">Step 0 — Identify</div>
+    <div class="group-row">
+      <div class="field">
+        <label>Group Name / Number</label>
+        <input type="text" id="groupName" placeholder="e.g. Group 4 / The Neural Nets" />
+      </div>
+      <div class="field" style="grid-column: span 2">
+        <label>Group Members</label>
+        <input type="text" id="members" placeholder="Names separated by commas" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Idea Summary -->
+  <div class="section">
+    <div class="section-label">Step 0 — Your Idea</div>
+    <div class="section-title">Remind yourselves what you're simulating</div>
+    <p class="section-desc">Briefly state your pre-existing speculative artwork idea. This is your anchor for everything that follows.</p>
+    <div class="field">
+      <label>Our speculative artwork idea (in one or two sentences)</label>
+      <textarea id="ideaSentence" placeholder="Our artwork is _________ — it _________"></textarea>
+    </div>
+  </div>
+
+  <hr class="divider" data-label="Finding Your Simulation">
+
+
+
+  <!-- Links Reference -->
+  <div class="assignment-block">
+    <h2>Artist Reference List — Browse &amp; Choose One</h2>
+    <p style="font-size:13px; color: var(--text-muted); margin-bottom:16px; line-height:1.7">Look through these artists' works. Find one whose techniques, approach, or aesthetic could help you <em style="color:var(--text)">simulate</em> your idea. You're not copying them — you're borrowing their method as a tool.</p>
+    <div class="links-grid">
+      <div class="link-item">
+        <span class="link-num">01</span>
+        <span class="artist-name">Emilija Škarnulytė</span>
+        <a href="https://www.emilijaskarnulyte.com/" target="_blank">emilijaskarnulyte.com</a>
+      </div>
+      <div class="link-item">
+        <span class="link-num">02</span>
+        <span class="artist-name">Infopsin</span>
+        <a href="https://www.infopsin.org/#EXCERPTS" target="_blank">infopsin.org — Excerpts</a>
+      </div>
+      <div class="link-item">
+        <span class="link-num">03</span>
+        <span class="artist-name">Priya Geetha Dia</span>
+        <a href="https://priyageethadia.com/spectre-system,-2024" target="_blank">Spectre System, 2024</a>
+      </div>
+      <div class="link-item">
+        <span class="link-num">04</span>
+        <span class="artist-name">Firas Shehadeh</span>
+        <a href="https://www.firasshehadeh.com/like-an-event-in-a-dream-dreamt-by-another-dreamcore/" target="_blank">Like An Event In A Dream</a>
+      </div>
+      <div class="link-item">
+        <span class="link-num">05</span>
+        <span class="artist-name">KEIKEN</span>
+        <a href="https://keiken.cloud/work/morphogenic-angels-omoiyari/" target="_blank">Morphogenic Angels / Omoiyari</a>
+      </div>
+      <div class="link-item">
+        <span class="link-num">06</span>
+        <span class="artist-name">Sahej Rahal</span>
+        <a href="https://sahejrahal.com/filter/Audio-Reactive-AI-simulation/ANHAD" target="_blank">ANHAD — Audio Reactive AI Sim</a>
+      </div>
+      <div class="link-item">
+        <span class="link-num">07</span>
+        <span class="artist-name">Dunne & Raby</span>
+        <a href="https://dunneandraby.co.uk/content/projects/772/0#" target="_blank">dunneandraby.co.uk / Projects</a>
+      </div>
+      <div class="link-item">
+        <span class="link-num">08</span>
+        <span class="artist-name">MoMA</span>
+        <a href="https://www.moma.org/calendar/exhibitions/3656" target="_blank">Is This Tomorrow? (MoMA)</a>
+      </div>
+      <div class="link-item">
+        <span class="link-num">09</span>
+        <span class="artist-name">Ian Cheng</span>
+        <a href="https://art21.org/read/in-plain-view-ian-chengs-live-simulations/" target="_blank">Ian Cheng — Live Simulations</a>
+      </div>
+      <div class="link-item">
+        <span class="link-num">10</span>
+        <span class="artist-name">Cao Fei — RMB City</span>
+        <a href="https://sites.rhizome.org/anthology/rmbcity.html" target="_blank">Rhizome — RMB City</a>
+      </div>
+      <div class="link-item">
+        <span class="link-num">11</span>
+        <span class="artist-name">Sven Påhlsson</span>
+        <a href="http://www.svenpahlsson.com/" target="_blank">svenpahlsson.com</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Choose artist -->
+  <div class="section">
+    <div class="section-label">Step 2 — Choose Your Artist</div>
+    <div class="section-title">Which artist's work will you use?</div>
+    <p class="section-desc">Pick the artist from the list above whose approach feels most useful for simulating your idea. Then dig into what specifically you're borrowing.</p>
+
+    <div class="group-row" style="grid-template-columns: 1fr 1fr; margin-bottom:16px">
+      <div class="field">
+        <label>Chosen Artist</label>
+        <select id="assignedLink">
+          <option value="">— Select an artist —</option>
+          <option value="1">01 — Emilija Škarnulytė</option>
+          <option value="2">02 — Infopsin / Excerpts</option>
+          <option value="3">03 — Priya Geetha Dia — Spectre System</option>
+          <option value="4">04 — Firas Shehadeh — Like An Event</option>
+          <option value="5">05 — KEIKEN — Morphogenic Angels</option>
+          <option value="6">06 — Sahej Rahal — ANHAD</option>
+          <option value="7">07 — Dunne & Raby</option>
+          <option value="8">08 — MoMA — Is This Tomorrow?</option>
+          <option value="9">09 — Ian Cheng — Live Simulations</option>
+          <option value="10">10 — Rhizome / Cao Fei — RMB City</option>
+          <option value="11">11 — Sven Påhlsson</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Why this one? (quick reason)</label>
+        <input type="text" id="whyArtist" placeholder="e.g. their use of live systems feels close to our idea" />
+      </div>
+    </div>
+
+    <div class="field" style="margin-bottom:16px">
+      <label>What specific technique, approach, or aesthetic from this artist are you borrowing?</label>
+      <textarea id="obs1" placeholder="e.g. the way they use audio reactivity, their speculative narrative structure, their 3D world-building, their feedback loops..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>One specific image, moment, or concept in their work that connects to your idea</label>
+      <input type="text" id="obs2" placeholder="Describe it concretely — a scene, a technique, a material choice" />
+    </div>
+  </div>
+
+  <hr class="divider" data-label="Connection Diagram">
+
+  <!-- Diagram -->
+  <div class="diagram-wrapper">
+    <h3>Simulation Diagram — Fill in each node</h3>
+    <div class="diagram">
+      <div class="diagram-node accent-node">
+        <div class="node-label">Your Speculative Artwork</div>
+        <input type="text" class="node-input" id="diag1" placeholder="Name / describe your piece" />
+      </div>
+
+      <div class="diagram-plus">+</div>
+
+      <div class="diagram-node">
+        <div class="node-label">From the Artist's Work</div>
+        <input type="text" class="node-input" id="diag2" placeholder="technique / image / system" />
+      </div>
+
+      <div class="diagram-arrow">
+        <div class="arrow-label">gives you a way to simulate</div>
+        <div class="arrow-line">
+          <div class="arrow-shaft"></div>
+          <div class="arrow-head"></div>
+        </div>
+      </div>
+
+      <div class="diagram-node teal-node">
+        <div class="node-label">Your Simulation Method</div>
+        <input type="text" class="node-input" id="diag3" placeholder="how you'd actually make it" />
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" data-label="Simulation Plan">
+
+  <!-- Step 3: Simulate -->
+  <div class="section">
+    <div class="section-label">Step 3 — Plan the Simulation</div>
+    <div class="section-title">How would you actually do it?</div>
+    <p class="section-desc">Using the artist's approach as your model, get specific about how your group would simulate your artwork. Think tools, materials, code, process, performance — anything.</p>
+
+    <div class="field" style="margin-bottom:16px">
+      <label>Describe your simulation method — what would you do, step by step or layer by layer?</label>
+      <textarea id="sim1" class="tall" placeholder="Walk through how the simulation would work, using the artist's technique as a starting point..."></textarea>
+    </div>
+
+    <div class="field" style="margin-bottom:16px">
+      <label>What part of the simulation would be the hardest or most interesting to work out?</label>
+      <textarea id="sim2" placeholder="What's the key challenge — technical, conceptual, or material?"></textarea>
+    </div>
+
+    <div class="field">
+      <label>If you could only simulate ONE aspect of your idea today, what would it be?</label>
+      <input type="text" id="sim3" placeholder="The single most essential element to prototype first" />
+    </div>
+  </div>
+
+  <hr class="divider" data-label="Reflection">
+
+  <!-- Step 4: Reflect -->
+  <div class="section">
+    <div class="section-label">Step 4 — Reflect</div>
+    <div class="section-title">Discussion questions</div>
+    <p class="section-desc">Check off the questions your group discussed. Add notes below.</p>
+
+    <div class="checklist" style="margin-bottom: 20px;">
+      <div class="check-item">
+        <input type="checkbox" id="chk1" />
+        <label class="check-label" for="chk1">Does borrowing this artist's method change anything about your original idea?</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="chk2" />
+        <label class="check-label" for="chk2">What does "simulating" an artwork mean — is a simulation the same as making the work?</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="chk3" />
+        <label class="check-label" for="chk3">What is lost or gained when your idea is simulated through someone else's technique?</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="chk4" />
+        <label class="check-label" for="chk4">What political, ecological, or social ideas does the artist's method bring with it?</label>
+      </div>
+      <div class="check-item">
+        <input type="checkbox" id="chk5" />
+        <label class="check-label" for="chk5">Could a different artist from the list have led to a completely different simulation?</label>
+      </div>
+    </div>
+
+    <div class="field" style="margin-bottom:24px">
+      <label>Discussion notes</label>
+      <textarea id="discussion" class="tall" placeholder="Key points, disagreements, interesting tangents from your group discussion..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Confidence / excitement about this simulation approach</label>
+      <div class="rating-row" id="ratingRow">
+        <button class="rating-btn" onclick="setRating(1)">1 — Early / uncertain</button>
+        <button class="rating-btn" onclick="setRating(2)">2 — Taking shape</button>
+        <button class="rating-btn" onclick="setRating(3)">3 — Pretty solid</button>
+        <button class="rating-btn" onclick="setRating(4)">4 — Very excited</button>
+      </div>
+      <input type="hidden" id="ratingValue" value="" />
+    </div>
+  </div>
+
+  <hr class="divider" data-label="Final Statement">
+
+  <!-- Final -->
+  <div class="section">
+    <div class="section-label">Step 5 — Crystallize</div>
+    <div class="section-title">One-sentence summary</div>
+    <p class="section-desc">Bring it all together in a single sentence.</p>
+    <div class="field">
+      <label>We will simulate our artwork by…</label>
+      <input type="text" id="pitch" placeholder="We will simulate _________ using _________ 's approach of _________ to _________" />
+    </div>
+  </div>
+
+</div><!-- end page-wrapper -->
+
+<!-- Toolbar -->
+<div class="toolbar">
+  <span class="save-indicator" id="saveIndicator">Auto-saving…</span>
+  <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
+  <button class="btn btn-primary" onclick="exportPDF()">Export PDF ↓</button>
+</div>
+
+<script>
+  // ── Save / Load ──────────────────────────────────────────────
+  const FIELDS = [
+    'groupName','members',
+    'ideaSentence',
+    'assignedLink','whyArtist',
+    'obs1','obs2',
+    'diag1','diag2','diag3',
+    'sim1','sim2','sim3',
+    'chk1','chk2','chk3','chk4','chk5',
+    'discussion','ratingValue','pitch'
+  ];
+
+  function save() {
+    const data = {};
+    FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (el.type === 'checkbox') data[id] = el.checked;
+      else data[id] = el.value;
+    });
+    localStorage.setItem('specArtWorksheet', JSON.stringify(data));
+    const ind = document.getElementById('saveIndicator');
+    ind.textContent = 'Saved ✓';
+    ind.classList.add('saved');
+    setTimeout(() => {
+      ind.textContent = 'Auto-saving…';
+      ind.classList.remove('saved');
+    }, 2000);
+  }
+
+  function load() {
+    const raw = localStorage.getItem('specArtWorksheet');
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el || data[id] === undefined) return;
+      if (el.type === 'checkbox') el.checked = data[id];
+      else el.value = data[id];
+    });
+    // Restore rating button
+    const rv = document.getElementById('ratingValue').value;
+    if (rv) {
+      document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
+      const btn = document.querySelector(`.rating-btn:nth-child(${rv})`);
+      if (btn) btn.classList.add('selected');
+    }
+  }
+
+  function clearAll() {
+    if (!confirm('Clear all responses? This cannot be undone.')) return;
+    localStorage.removeItem('specArtWorksheet');
+    FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (el.type === 'checkbox') el.checked = false;
+      else el.value = '';
+    });
+    document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
+  }
+
+  function setRating(n) {
+    document.getElementById('ratingValue').value = n;
+    document.querySelectorAll('.rating-btn').forEach((b, i) => {
+      b.classList.toggle('selected', i + 1 === n);
+    });
+    save();
+  }
+
+  // Auto-grow textareas
+  function autoGrow(el) {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  }
+
+  document.querySelectorAll('textarea').forEach(ta => {
+    ta.addEventListener('input', () => autoGrow(ta));
+    // Grow on load if content exists
+    autoGrow(ta);
+  });
+
+  // Auto-save on any change
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('input', save);
+    el.addEventListener('change', save);
+  });
+
+  // ── PDF Export ───────────────────────────────────────────────
+  function exportPDF() {
+    // Build a clean print document where every input/textarea/select
+    // is replaced with a plain <div> containing its value, so nothing clips.
+    const clone = document.getElementById('worksheet').cloneNode(true);
+
+    // Replace all text inputs and selects with value divs
+    clone.querySelectorAll('input[type="text"], input[type="hidden"]').forEach(el => {
+      const div = document.createElement('div');
+      div.className = 'print-value';
+      div.textContent = el.value || '';
+      el.parentNode.replaceChild(div, el);
+    });
+
+    // Replace diagram node inputs specially
+    clone.querySelectorAll('.node-input').forEach(el => {
+      const div = document.createElement('div');
+      div.className = 'print-value node-print-value';
+      div.textContent = el.value || '';
+      el.parentNode.replaceChild(div, el);
+    });
+
+    // Replace textareas with pre-wrap divs
+    clone.querySelectorAll('textarea').forEach(el => {
+      const div = document.createElement('div');
+      div.className = 'print-value print-textarea';
+      div.textContent = el.value || '';
+      el.parentNode.replaceChild(div, el);
+    });
+
+    // Replace selects with their selected label
+    clone.querySelectorAll('select').forEach(el => {
+      const div = document.createElement('div');
+      div.className = 'print-value';
+      div.textContent = el.options[el.selectedIndex]?.text || '';
+      el.parentNode.replaceChild(div, el);
+    });
+
+    // Replace checkboxes with visible tick/empty indicators
+    clone.querySelectorAll('input[type="checkbox"]').forEach(el => {
+      const span = document.createElement('span');
+      span.className = 'print-checkbox';
+      span.textContent = el.checked ? '☑' : '☐';
+      el.parentNode.replaceChild(span, el);
+    });
+
+    // Remove rating buttons, replace with plain text of selected rating
+    clone.querySelectorAll('.rating-row').forEach(row => {
+      const selected = row.querySelector('.rating-btn.selected');
+      const div = document.createElement('div');
+      div.className = 'print-value';
+      div.textContent = selected ? selected.textContent : '—';
+      row.parentNode.replaceChild(div, row);
+    });
+
+    const printStyles = `
+      @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@300;400;600&display=swap');
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { background: #fff; color: #111; font-family: 'Space Grotesk', sans-serif; font-size: 13px; line-height: 1.7; padding: 24px 32px 40px; }
+      h1 { font-family: 'DM Serif Display', serif; font-size: 32px; font-weight: 400; line-height: 1.1; color: #111; margin-bottom: 12px; }
+      h1 em { font-style: italic; color: #7a5c2e; }
+      .header-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #7a5c2e; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+      .header-tag::before { content: ''; display: inline-block; width: 20px; height: 1px; background: #7a5c2e; }
+      .header { border-bottom: 1px solid #ccc; padding-bottom: 20px; margin-bottom: 28px; }
+      .header-subtitle { color: #555; font-size: 13px; }
+      .section { margin-bottom: 28px; }
+      .section-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: #777; margin-bottom: 6px; }
+      .section-title { font-family: 'DM Serif Display', serif; font-size: 18px; font-weight: 400; color: #111; margin-bottom: 4px; }
+      .section-desc { font-size: 12px; color: #666; margin-bottom: 12px; line-height: 1.7; }
+      .field { margin-bottom: 14px; }
+      .field label { display: block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: #777; margin-bottom: 5px; }
+      .print-value { border: 1px solid #bbb; border-radius: 3px; padding: 8px 12px; background: #fafaf8; color: #111; font-family: 'Space Grotesk', sans-serif; font-size: 13px; min-height: 32px; width: 100%; }
+      .print-textarea { white-space: pre-wrap; word-break: break-word; min-height: 70px; }
+      .node-print-value { border: none; border-bottom: 1px solid #bbb; border-radius: 0; background: transparent; text-align: center; padding: 4px 0; font-size: 12px; min-height: 24px; }
+      .assignment-block { background: #f5f4f0; border: 1px solid #ccc; border-left: 3px solid #7a5c2e; border-radius: 4px; padding: 20px 24px; margin-bottom: 28px; }
+      .assignment-block h2 { font-family: 'DM Serif Display', serif; font-size: 16px; font-weight: 400; color: #7a5c2e; margin-bottom: 10px; }
+      .assignment-block p { font-size: 12px; color: #666; margin-bottom: 12px; }
+      .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+      .link-item { background: #fff; border: 1px solid #ccc; border-radius: 3px; padding: 8px 12px; }
+      .link-num { font-family: 'DM Mono', monospace; font-size: 9px; color: #777; }
+      .artist-name { font-size: 12px; color: #111; font-weight: 600; display: block; }
+      .link-item a { color: #2e5c7a; font-size: 11px; text-decoration: none; word-break: break-all; }
+      .group-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 28px; }
+      hr.divider { border: none; border-top: 1px solid #ccc; margin: 24px 0; position: relative; }
+      .divider::after { content: attr(data-label); position: absolute; top: -9px; left: 0; background: #fff; padding-right: 12px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #777; }
+      .diagram-wrapper { background: #f5f4f0; border: 1px solid #ccc; border-radius: 6px; padding: 24px 20px; margin-bottom: 28px; }
+      .diagram-wrapper h3 { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: #777; margin-bottom: 18px; }
+      .diagram { display: flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 0; }
+      .diagram-node { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 10px 14px; min-width: 140px; text-align: center; }
+      .diagram-node.accent-node { border-color: #7a5c2e; background: #fdf8f0; }
+      .diagram-node.teal-node { border-color: #2e7a5c; background: #f0fdf8; }
+      .node-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: #777; margin-bottom: 6px; }
+      .diagram-arrow { display: flex; flex-direction: column; align-items: center; padding: 0 10px; }
+      .arrow-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #777; text-align: center; max-width: 70px; line-height: 1.4; margin-bottom: 2px; }
+      .arrow-line { display: flex; align-items: center; }
+      .arrow-shaft { width: 36px; height: 1px; background: #7a5c2e; }
+      .arrow-head { width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 7px solid #7a5c2e; }
+      .diagram-plus { font-size: 18px; color: #999; padding: 0 6px; padding-top: 12px; }
+      .checklist { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+      .check-item { display: flex; gap: 10px; align-items: flex-start; }
+      .print-checkbox { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+      .check-label { font-size: 13px; color: #111; line-height: 1.6; }
+    `;
+
+    const win = window.open('', '_blank', 'width=900,height=700');
+    win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Speculative Art Worksheet</title><style>${printStyles}</style></head><body>${clone.innerHTML}</body></html>`);
+    win.document.close();
+    win.focus();
+    setTimeout(() => { win.print(); }, 800);
+  }
+
+  // Load on start
+  load();
+  // Re-grow all textareas after loading saved content
+  document.querySelectorAll('textarea').forEach(ta => autoGrow(ta));
+</script>
+</body>
+</html>
