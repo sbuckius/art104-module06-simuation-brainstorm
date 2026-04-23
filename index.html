@@ -32,7 +32,6 @@
     min-height: 100vh;
   }
 
-  /* Grain texture overlay */
   body::before {
     content: '';
     position: fixed;
@@ -51,7 +50,6 @@
     padding: 60px 40px 100px;
   }
 
-  /* Header */
   .header {
     border-bottom: 1px solid var(--border);
     padding-bottom: 40px;
@@ -100,7 +98,6 @@
     line-height: 1.8;
   }
 
-  /* Sections */
   .section {
     margin-bottom: 44px;
   }
@@ -130,7 +127,6 @@
     line-height: 1.8;
   }
 
-  /* Artist Assignment Block */
   .assignment-block {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -199,7 +195,6 @@
     font-weight: 500;
   }
 
-  /* Group Info Row */
   .group-row {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -209,7 +204,6 @@
 
   @media (max-width: 600px) { .group-row { grid-template-columns: 1fr; } }
 
-  /* Inputs */
   .field {
     display: flex;
     flex-direction: column;
@@ -245,7 +239,6 @@
     background: #191710;
   }
 
-  /* Textareas auto-grow to content */
   textarea {
     resize: none;
     overflow: hidden;
@@ -260,7 +253,6 @@
     background: #1e1b14;
   }
 
-  /* Divider */
   .divider {
     border: none;
     border-top: 1px solid var(--border);
@@ -282,7 +274,6 @@
     color: var(--text-muted);
   }
 
-  /* Diagram */
   .diagram-wrapper {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -395,17 +386,15 @@
     border-left: 8px solid var(--accent);
   }
 
-  /* Plus symbol between nodes */
   .diagram-plus {
     font-size: 20px;
     color: var(--text-muted);
     padding: 0 8px;
     line-height: 1;
     align-self: center;
-    padding-top: 14px; /* offset for label space */
+    padding-top: 14px;
   }
 
-  /* Observation / checklist */
   .checklist {
     display: flex;
     flex-direction: column;
@@ -433,7 +422,6 @@
     line-height: 1.6;
   }
 
-  /* Rating */
   .rating-row {
     display: flex;
     gap: 8px;
@@ -456,7 +444,6 @@
   .rating-btn:hover { border-color: var(--accent); color: var(--accent); }
   .rating-btn.selected { border-color: var(--accent); color: var(--accent); background: rgba(200,169,110,0.1); }
 
-  /* Export button */
   .toolbar {
     position: fixed;
     bottom: 0;
@@ -516,155 +503,18 @@
     color: var(--text);
     border-color: var(--text-muted);
   }
-
-  /* Print / PDF styles */
-  @media print {
-    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-
-    body {
-      background: #ffffff !important;
-      color: #111111 !important;
-      font-size: 12px !important;
-    }
-
-    body::before { display: none !important; }
-
-    .toolbar { display: none !important; }
-
-    .page-wrapper {
-      max-width: 100% !important;
-      padding: 20px 24px 40px !important;
-    }
-
-    /* Override all CSS variables for print */
-    :root {
-      --bg: #ffffff !important;
-      --surface: #f5f4f0 !important;
-      --surface2: #eeede8 !important;
-      --border: #cccccc !important;
-      --accent: #7a5c2e !important;
-      --accent2: #2e7a5c !important;
-      --text: #111111 !important;
-      --text-muted: #555555 !important;
-      --input-bg: #f9f8f5 !important;
-    }
-
-    h1 { font-size: 28px !important; color: #111 !important; }
-    h1 em { color: #7a5c2e !important; }
-    .header-tag { color: #7a5c2e !important; }
-    .header-tag::before { background: #7a5c2e !important; }
-    .header-subtitle { color: #555 !important; }
-
-    .header {
-      border-bottom: 1px solid #ccc !important;
-      margin-bottom: 24px !important;
-      padding-bottom: 20px !important;
-    }
-
-    .section-label { color: #555 !important; }
-    .section-title { color: #111 !important; font-size: 16px !important; }
-    .section-desc { color: #555 !important; }
-
-    .assignment-block {
-      background: #f5f4f0 !important;
-      border: 1px solid #ccc !important;
-      border-left: 3px solid #7a5c2e !important;
-      break-inside: avoid;
-    }
-
-    .assignment-block h2 { color: #7a5c2e !important; }
-
-    .link-item {
-      background: #f9f8f5 !important;
-      border: 1px solid #ccc !important;
-    }
-
-    .link-item .artist-name { color: #111 !important; }
-    .link-item .link-num { color: #555 !important; }
-    .link-item a { color: #2e5c7a !important; }
-
-    input[type="text"],
-    input[type="text"].node-input,
-    textarea,
-    select {
-      background: #ffffff !important;
-      border: 1px solid #aaaaaa !important;
-      color: #111111 !important;
-      -webkit-appearance: none !important;
-      height: auto !important;
-      min-height: 0 !important;
-      max-height: none !important;
-      overflow: visible !important;
-      white-space: pre-wrap !important;
-      word-break: break-word !important;
-    }
-
-    .diagram-wrapper {
-      background: #f5f4f0 !important;
-      border: 1px solid #ccc !important;
-      break-inside: avoid;
-    }
-
-    .diagram-node {
-      background: #f9f8f5 !important;
-      border: 1px solid #ccc !important;
-    }
-
-    .diagram-node.accent-node {
-      border-color: #7a5c2e !important;
-      background: #fdf8f0 !important;
-    }
-
-    .diagram-node.teal-node {
-      border-color: #2e7a5c !important;
-      background: #f0fdf8 !important;
-    }
-
-    .diagram-node .node-label { color: #555 !important; }
-    .diagram-node .node-input {
-      border-bottom: 1px solid #aaa !important;
-      color: #111 !important;
-    }
-
-    .arrow-shaft { background: #7a5c2e !important; }
-    .arrow-head { border-left-color: #7a5c2e !important; }
-    .arrow-label { color: #555 !important; }
-    .diagram-plus { color: #555 !important; }
-
-    .divider { border-top: 1px solid #ccc !important; }
-
-    .check-item input[type="checkbox"] { accent-color: #7a5c2e !important; }
-    .check-item .check-label { color: #111 !important; }
-
-    .rating-btn {
-      background: #f5f4f0 !important;
-      border: 1px solid #ccc !important;
-      color: #555 !important;
-    }
-
-    .rating-btn.selected {
-      border-color: #7a5c2e !important;
-      color: #7a5c2e !important;
-      background: #fdf8f0 !important;
-    }
-
-    .section { break-inside: avoid; margin-bottom: 24px !important; }
-    .field { break-inside: avoid; }
-  }
 </style>
 </head>
 <body>
 
 <div class="page-wrapper" id="worksheet">
 
-  <!-- Header -->
   <div class="header">
     <div class="header-tag">Group Worksheet</div>
     <h1>Speculative Art<br><em>Simulation Studio</em></h1>
     <p class="header-subtitle">You already have your speculative artwork idea. Browse the artist list, pick one whose approach feels useful, and use their techniques to figure out how you'd simulate your piece.</p>
   </div>
 
-  <!-- Group Info -->
   <div class="section">
     <div class="section-label">Step 0 — Identify</div>
     <div class="group-row">
@@ -679,7 +529,6 @@
     </div>
   </div>
 
-  <!-- Idea Summary -->
   <div class="section">
     <div class="section-label">Step 0 — Your Idea</div>
     <div class="section-title">Remind yourselves what you're simulating</div>
@@ -692,9 +541,6 @@
 
   <hr class="divider" data-label="Finding Your Simulation">
 
-
-
-  <!-- Links Reference -->
   <div class="assignment-block">
     <h2>Artist Reference List — Browse &amp; Choose One</h2>
     <p style="font-size:13px; color: var(--text-muted); margin-bottom:16px; line-height:1.7">Look through these artists' works. Find one whose techniques, approach, or aesthetic could help you <em style="color:var(--text)">simulate</em> your idea. You're not copying them — you're borrowing their method as a tool.</p>
@@ -757,7 +603,6 @@
     </div>
   </div>
 
-  <!-- Step 2: Choose artist -->
   <div class="section">
     <div class="section-label">Step 2 — Choose Your Artist</div>
     <div class="section-title">Which artist's work will you use?</div>
@@ -800,7 +645,6 @@
 
   <hr class="divider" data-label="Connection Diagram">
 
-  <!-- Diagram -->
   <div class="diagram-wrapper">
     <h3>Simulation Diagram — Fill in each node</h3>
     <div class="diagram">
@@ -833,7 +677,6 @@
 
   <hr class="divider" data-label="Simulation Plan">
 
-  <!-- Step 3: Simulate -->
   <div class="section">
     <div class="section-label">Step 3 — Plan the Simulation</div>
     <div class="section-title">How would you actually do it?</div>
@@ -857,7 +700,6 @@
 
   <hr class="divider" data-label="Reflection">
 
-  <!-- Step 4: Reflect -->
   <div class="section">
     <div class="section-label">Step 4 — Reflect</div>
     <div class="section-title">Discussion questions</div>
@@ -905,7 +747,6 @@
 
   <hr class="divider" data-label="Final Statement">
 
-  <!-- Final -->
   <div class="section">
     <div class="section-label">Step 5 — Crystallize</div>
     <div class="section-title">One-sentence summary</div>
@@ -916,9 +757,8 @@
     </div>
   </div>
 
-</div><!-- end page-wrapper -->
+</div>
 
-<!-- Toolbar -->
 <div class="toolbar">
   <span class="save-indicator" id="saveIndicator">Auto-saving…</span>
   <button class="btn btn-ghost" onclick="clearAll()">Clear</button>
@@ -926,7 +766,6 @@
 </div>
 
 <script>
-  // ── Save / Load ──────────────────────────────────────────────
   const FIELDS = [
     'groupName','members',
     'ideaSentence',
@@ -966,7 +805,6 @@
       if (el.type === 'checkbox') el.checked = data[id];
       else el.value = data[id];
     });
-    // Restore rating button
     const rv = document.getElementById('ratingValue').value;
     if (rv) {
       document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('selected'));
@@ -995,7 +833,6 @@
     save();
   }
 
-  // Auto-grow textareas
   function autoGrow(el) {
     el.style.height = 'auto';
     el.style.height = el.scrollHeight + 'px';
@@ -1003,130 +840,540 @@
 
   document.querySelectorAll('textarea').forEach(ta => {
     ta.addEventListener('input', () => autoGrow(ta));
-    // Grow on load if content exists
     autoGrow(ta);
   });
 
-  // Auto-save on any change
   document.querySelectorAll('input, textarea, select').forEach(el => {
     el.addEventListener('input', save);
     el.addEventListener('change', save);
   });
 
   // ── PDF Export ───────────────────────────────────────────────
+  // Collects all field values and builds a complete static HTML document
+  // that renders reliably in the browser's print dialog without any clipping.
   function exportPDF() {
-    // Build a clean print document where every input/textarea/select
-    // is replaced with a plain <div> containing its value, so nothing clips.
-    const clone = document.getElementById('worksheet').cloneNode(true);
-
-    // Replace all text inputs and selects with value divs
-    clone.querySelectorAll('input[type="text"], input[type="hidden"]').forEach(el => {
-      const div = document.createElement('div');
-      div.className = 'print-value';
-      div.textContent = el.value || '';
-      el.parentNode.replaceChild(div, el);
+    // Collect all current values first
+    const values = {};
+    FIELDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (el.type === 'checkbox') values[id] = el.checked;
+      else values[id] = el.value || '';
     });
 
-    // Replace diagram node inputs specially
-    clone.querySelectorAll('.node-input').forEach(el => {
-      const div = document.createElement('div');
-      div.className = 'print-value node-print-value';
-      div.textContent = el.value || '';
-      el.parentNode.replaceChild(div, el);
-    });
+    // Selected artist label
+    const artistEl = document.getElementById('assignedLink');
+    const artistLabel = artistEl.options[artistEl.selectedIndex]?.text || '—';
 
-    // Replace textareas with pre-wrap divs
-    clone.querySelectorAll('textarea').forEach(el => {
-      const div = document.createElement('div');
-      div.className = 'print-value print-textarea';
-      div.textContent = el.value || '';
-      el.parentNode.replaceChild(div, el);
-    });
+    // Selected rating label
+    const selectedRatingBtn = document.querySelector('.rating-btn.selected');
+    const ratingLabel = selectedRatingBtn ? selectedRatingBtn.textContent : '—';
 
-    // Replace selects with their selected label
-    clone.querySelectorAll('select').forEach(el => {
-      const div = document.createElement('div');
-      div.className = 'print-value';
-      div.textContent = el.options[el.selectedIndex]?.text || '';
-      el.parentNode.replaceChild(div, el);
-    });
+    // Checkbox states
+    const checks = [1,2,3,4,5].map(n => ({
+      checked: values[`chk${n}`],
+      label: document.querySelector(`label[for="chk${n}"]`)?.textContent || ''
+    }));
 
-    // Replace checkboxes with visible tick/empty indicators
-    clone.querySelectorAll('input[type="checkbox"]').forEach(el => {
-      const span = document.createElement('span');
-      span.className = 'print-checkbox';
-      span.textContent = el.checked ? '☑' : '☐';
-      el.parentNode.replaceChild(span, el);
-    });
+    function field(labelText, value, isTextarea = false) {
+      const tag = isTextarea ? 'div' : 'div';
+      const cls = isTextarea ? 'print-value print-textarea' : 'print-value';
+      return `
+        <div class="field">
+          <div class="field-label">${labelText}</div>
+          <div class="${cls}">${escapeHtml(value) || '<span class="empty">—</span>'}</div>
+        </div>`;
+    }
 
-    // Remove rating buttons, replace with plain text of selected rating
-    clone.querySelectorAll('.rating-row').forEach(row => {
-      const selected = row.querySelector('.rating-btn.selected');
-      const div = document.createElement('div');
-      div.className = 'print-value';
-      div.textContent = selected ? selected.textContent : '—';
-      row.parentNode.replaceChild(div, row);
-    });
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/\n/g, '<br>');
+    }
 
-    const printStyles = `
-      @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@300;400;600&display=swap');
-      * { box-sizing: border-box; margin: 0; padding: 0; }
-      body { background: #fff; color: #111; font-family: 'Space Grotesk', sans-serif; font-size: 13px; line-height: 1.7; padding: 24px 32px 40px; }
-      h1 { font-family: 'DM Serif Display', serif; font-size: 32px; font-weight: 400; line-height: 1.1; color: #111; margin-bottom: 12px; }
-      h1 em { font-style: italic; color: #7a5c2e; }
-      .header-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: #7a5c2e; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
-      .header-tag::before { content: ''; display: inline-block; width: 20px; height: 1px; background: #7a5c2e; }
-      .header { border-bottom: 1px solid #ccc; padding-bottom: 20px; margin-bottom: 28px; }
-      .header-subtitle { color: #555; font-size: 13px; }
-      .section { margin-bottom: 28px; }
-      .section-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: #777; margin-bottom: 6px; }
-      .section-title { font-family: 'DM Serif Display', serif; font-size: 18px; font-weight: 400; color: #111; margin-bottom: 4px; }
-      .section-desc { font-size: 12px; color: #666; margin-bottom: 12px; line-height: 1.7; }
-      .field { margin-bottom: 14px; }
-      .field label { display: block; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase; color: #777; margin-bottom: 5px; }
-      .print-value { border: 1px solid #bbb; border-radius: 3px; padding: 8px 12px; background: #fafaf8; color: #111; font-family: 'Space Grotesk', sans-serif; font-size: 13px; min-height: 32px; width: 100%; }
-      .print-textarea { white-space: pre-wrap; word-break: break-word; min-height: 70px; }
-      .node-print-value { border: none; border-bottom: 1px solid #bbb; border-radius: 0; background: transparent; text-align: center; padding: 4px 0; font-size: 12px; min-height: 24px; }
-      .assignment-block { background: #f5f4f0; border: 1px solid #ccc; border-left: 3px solid #7a5c2e; border-radius: 4px; padding: 20px 24px; margin-bottom: 28px; }
-      .assignment-block h2 { font-family: 'DM Serif Display', serif; font-size: 16px; font-weight: 400; color: #7a5c2e; margin-bottom: 10px; }
-      .assignment-block p { font-size: 12px; color: #666; margin-bottom: 12px; }
-      .links-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-      .link-item { background: #fff; border: 1px solid #ccc; border-radius: 3px; padding: 8px 12px; }
-      .link-num { font-family: 'DM Mono', monospace; font-size: 9px; color: #777; }
-      .artist-name { font-size: 12px; color: #111; font-weight: 600; display: block; }
-      .link-item a { color: #2e5c7a; font-size: 11px; text-decoration: none; word-break: break-all; }
-      .group-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 28px; }
-      hr.divider { border: none; border-top: 1px solid #ccc; margin: 24px 0; position: relative; }
-      .divider::after { content: attr(data-label); position: absolute; top: -9px; left: 0; background: #fff; padding-right: 12px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #777; }
-      .diagram-wrapper { background: #f5f4f0; border: 1px solid #ccc; border-radius: 6px; padding: 24px 20px; margin-bottom: 28px; }
-      .diagram-wrapper h3 { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: #777; margin-bottom: 18px; }
-      .diagram { display: flex; align-items: center; flex-wrap: wrap; justify-content: center; gap: 0; }
-      .diagram-node { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 10px 14px; min-width: 140px; text-align: center; }
-      .diagram-node.accent-node { border-color: #7a5c2e; background: #fdf8f0; }
-      .diagram-node.teal-node { border-color: #2e7a5c; background: #f0fdf8; }
-      .node-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: #777; margin-bottom: 6px; }
-      .diagram-arrow { display: flex; flex-direction: column; align-items: center; padding: 0 10px; }
-      .arrow-label { font-family: 'DM Mono', monospace; font-size: 8px; letter-spacing: 0.1em; text-transform: uppercase; color: #777; text-align: center; max-width: 70px; line-height: 1.4; margin-bottom: 2px; }
-      .arrow-line { display: flex; align-items: center; }
-      .arrow-shaft { width: 36px; height: 1px; background: #7a5c2e; }
-      .arrow-head { width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 7px solid #7a5c2e; }
-      .diagram-plus { font-size: 18px; color: #999; padding: 0 6px; padding-top: 12px; }
-      .checklist { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-      .check-item { display: flex; gap: 10px; align-items: flex-start; }
-      .print-checkbox { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
-      .check-label { font-size: 13px; color: #111; line-height: 1.6; }
-    `;
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Speculative Art Simulation Worksheet</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Space+Grotesk:wght@300;400;600&display=swap');
 
-    const win = window.open('', '_blank', 'width=900,height=700');
-    win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Speculative Art Worksheet</title><style>${printStyles}</style></head><body>${clone.innerHTML}</body></html>`);
-    win.document.close();
-    win.focus();
-    setTimeout(() => { win.print(); }, 800);
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #fff;
+    color: #111;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    padding: 28px 36px 48px;
   }
 
-  // Load on start
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 34px;
+    font-weight: 400;
+    line-height: 1.1;
+    color: #111;
+    margin-bottom: 14px;
+  }
+  h1 em { font-style: italic; color: #7a5c2e; }
+
+  .header-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #7a5c2e;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .header-tag::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 1px;
+    background: #7a5c2e;
+  }
+
+  .header {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 22px;
+    margin-bottom: 28px;
+  }
+
+  .header-subtitle { color: #666; font-size: 13px; max-width: 520px; }
+
+  /* Sections */
+  .section {
+    margin-bottom: 28px;
+    page-break-inside: avoid;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 5px;
+  }
+
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: #111;
+    margin-bottom: 4px;
+  }
+
+  .section-desc {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+
+  /* Fields */
+  .field {
+    margin-bottom: 14px;
+    page-break-inside: avoid;
+  }
+
+  .field-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 5px;
+  }
+
+  .print-value {
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    padding: 9px 13px;
+    background: #fafaf8;
+    color: #111;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    width: 100%;
+    /* KEY FIX: no min-height, height:auto, overflow:visible so content never clips */
+    min-height: 0;
+    height: auto;
+    overflow: visible;
+  }
+
+  .print-textarea {
+    white-space: pre-wrap;
+    word-break: break-word;
+    /* give textareas a bit of breathing room but let them grow */
+    min-height: 48px;
+  }
+
+  .empty { color: #bbb; font-style: italic; }
+
+  /* Two-column row */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 14px;
+  }
+
+  .three-col {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  /* Divider */
+  hr.divider {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 24px 0;
+    position: relative;
+  }
+  .divider::after {
+    content: attr(data-label);
+    position: absolute;
+    top: -9px;
+    left: 0;
+    background: #fff;
+    padding-right: 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #888;
+  }
+
+  /* Assignment block */
+  .assignment-block {
+    background: #f5f4f0;
+    border: 1px solid #ccc;
+    border-left: 3px solid #7a5c2e;
+    border-radius: 4px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    page-break-inside: avoid;
+  }
+  .assignment-block h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    font-weight: 400;
+    color: #7a5c2e;
+    margin-bottom: 8px;
+  }
+  .assignment-block p {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 12px;
+    line-height: 1.7;
+  }
+  .links-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .link-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 7px 11px;
+  }
+  .link-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: #888;
+    display: block;
+  }
+  .artist-name {
+    font-size: 12px;
+    color: #111;
+    font-weight: 600;
+    display: block;
+  }
+  .link-item a {
+    color: #2e5c7a;
+    font-size: 11px;
+    text-decoration: none;
+    word-break: break-all;
+  }
+
+  /* Diagram */
+  .diagram-wrapper {
+    background: #f5f4f0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 22px 18px;
+    margin-bottom: 28px;
+    page-break-inside: avoid;
+  }
+  .diagram-wrapper h3 {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 16px;
+  }
+  /* Use a table for the diagram so it never wraps in print */
+  .diagram-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .diagram-table td {
+    vertical-align: middle;
+    padding: 0;
+  }
+  .diagram-cell { width: 28%; }
+  .diagram-plus-cell { width: 5%; text-align: center; font-size: 18px; color: #999; padding-bottom: 16px; }
+  .diagram-arrow-cell { width: 11%; text-align: center; }
+
+  .diagram-node {
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px 12px;
+    text-align: center;
+  }
+  .diagram-node.accent-node { border-color: #7a5c2e; background: #fdf8f0; }
+  .diagram-node.teal-node   { border-color: #2e7a5c; background: #f0fdf8; }
+
+  .node-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #888;
+    margin-bottom: 6px;
+  }
+  .node-value {
+    font-size: 12px;
+    color: #111;
+    border-top: 1px dashed #ccc;
+    padding-top: 5px;
+    min-height: 20px;
+    word-break: break-word;
+  }
+
+  .arrow-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #888;
+    text-align: center;
+    line-height: 1.4;
+    margin-bottom: 3px;
+  }
+  .arrow-line { display: flex; align-items: center; justify-content: center; }
+  .arrow-shaft { height: 1px; background: #7a5c2e; flex: 1; }
+  .arrow-head {
+    width: 0; height: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 7px solid #7a5c2e;
+  }
+
+  /* Checklist */
+  .checklist { margin-bottom: 16px; }
+  .check-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    page-break-inside: avoid;
+  }
+  .check-sym { font-size: 15px; flex-shrink: 0; line-height: 1.5; }
+  .check-label-text { font-size: 13px; color: #111; line-height: 1.6; }
+
+  @media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+    body { padding: 16px 24px 32px; }
+    .section, .field, .check-item, .diagram-wrapper, .assignment-block { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-tag">Group Worksheet</div>
+    <h1>Speculative Art<br><em>Simulation Studio</em></h1>
+    <p class="header-subtitle">You already have your speculative artwork idea. Browse the artist list, pick one whose approach feels useful, and use their techniques to figure out how you'd simulate your piece.</p>
+  </div>
+
+  <!-- Step 0: Identify -->
+  <div class="section">
+    <div class="section-label">Step 0 — Identify</div>
+    <div class="three-col">
+      ${field('Group Name / Number', values.groupName)}
+      ${field('Group Members', values.members)}
+    </div>
+  </div>
+
+  <!-- Step 0: Idea -->
+  <div class="section">
+    <div class="section-label">Step 0 — Your Idea</div>
+    <div class="section-title">Remind yourselves what you're simulating</div>
+    <p class="section-desc">Briefly state your pre-existing speculative artwork idea. This is your anchor for everything that follows.</p>
+    ${field('Our speculative artwork idea (in one or two sentences)', values.ideaSentence, true)}
+  </div>
+
+  <hr class="divider" data-label="Finding Your Simulation">
+
+  <!-- Artist reference block -->
+  <div class="assignment-block">
+    <h2>Artist Reference List — Browse &amp; Choose One</h2>
+    <p>Look through these artists' works. Find one whose techniques, approach, or aesthetic could help you simulate your idea. You're not copying them — you're borrowing their method as a tool.</p>
+    <div class="links-grid">
+      <div class="link-item"><span class="link-num">01</span><span class="artist-name">Emilija Škarnulytė</span><a>emilijaskarnulyte.com</a></div>
+      <div class="link-item"><span class="link-num">02</span><span class="artist-name">Infopsin</span><a>infopsin.org — Excerpts</a></div>
+      <div class="link-item"><span class="link-num">03</span><span class="artist-name">Priya Geetha Dia</span><a>Spectre System, 2024</a></div>
+      <div class="link-item"><span class="link-num">04</span><span class="artist-name">Firas Shehadeh</span><a>Like An Event In A Dream</a></div>
+      <div class="link-item"><span class="link-num">05</span><span class="artist-name">KEIKEN</span><a>Morphogenic Angels / Omoiyari</a></div>
+      <div class="link-item"><span class="link-num">06</span><span class="artist-name">Sahej Rahal</span><a>ANHAD — Audio Reactive AI Sim</a></div>
+      <div class="link-item"><span class="link-num">07</span><span class="artist-name">Dunne &amp; Raby</span><a>dunneandraby.co.uk / Projects</a></div>
+      <div class="link-item"><span class="link-num">08</span><span class="artist-name">MoMA</span><a>Is This Tomorrow? (MoMA)</a></div>
+      <div class="link-item"><span class="link-num">09</span><span class="artist-name">Ian Cheng</span><a>Ian Cheng — Live Simulations</a></div>
+      <div class="link-item"><span class="link-num">10</span><span class="artist-name">Cao Fei — RMB City</span><a>Rhizome — RMB City</a></div>
+      <div class="link-item"><span class="link-num">11</span><span class="artist-name">Sven Påhlsson</span><a>svenpahlsson.com</a></div>
+    </div>
+  </div>
+
+  <!-- Step 2: Choose Artist -->
+  <div class="section">
+    <div class="section-label">Step 2 — Choose Your Artist</div>
+    <div class="section-title">Which artist's work will you use?</div>
+    <p class="section-desc">Pick the artist whose approach feels most useful for simulating your idea. Then dig into what specifically you're borrowing.</p>
+
+    <div class="two-col">
+      ${field('Chosen Artist', artistLabel)}
+      ${field('Why this one? (quick reason)', values.whyArtist)}
+    </div>
+    ${field('What specific technique, approach, or aesthetic from this artist are you borrowing?', values.obs1, true)}
+    ${field('One specific image, moment, or concept in their work that connects to your idea', values.obs2)}
+  </div>
+
+  <hr class="divider" data-label="Connection Diagram">
+
+  <!-- Diagram -->
+  <div class="diagram-wrapper">
+    <h3>Simulation Diagram</h3>
+    <table class="diagram-table">
+      <tr>
+        <td class="diagram-cell">
+          <div class="diagram-node accent-node">
+            <div class="node-label">Your Speculative Artwork</div>
+            <div class="node-value">${escapeHtml(values.diag1) || '<span style="color:#bbb;font-style:italic">—</span>'}</div>
+          </div>
+        </td>
+        <td class="diagram-plus-cell">+</td>
+        <td class="diagram-cell">
+          <div class="diagram-node">
+            <div class="node-label">From the Artist's Work</div>
+            <div class="node-value">${escapeHtml(values.diag2) || '<span style="color:#bbb;font-style:italic">—</span>'}</div>
+          </div>
+        </td>
+        <td class="diagram-arrow-cell">
+          <div class="arrow-label">gives you a way to simulate</div>
+          <div class="arrow-line">
+            <div class="arrow-shaft"></div>
+            <div class="arrow-head"></div>
+          </div>
+        </td>
+        <td class="diagram-cell">
+          <div class="diagram-node teal-node">
+            <div class="node-label">Your Simulation Method</div>
+            <div class="node-value">${escapeHtml(values.diag3) || '<span style="color:#bbb;font-style:italic">—</span>'}</div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <hr class="divider" data-label="Simulation Plan">
+
+  <!-- Step 3 -->
+  <div class="section">
+    <div class="section-label">Step 3 — Plan the Simulation</div>
+    <div class="section-title">How would you actually do it?</div>
+    <p class="section-desc">Using the artist's approach as your model, get specific about how your group would simulate your artwork.</p>
+    ${field('Describe your simulation method — what would you do, step by step or layer by layer?', values.sim1, true)}
+    ${field('What part of the simulation would be the hardest or most interesting to work out?', values.sim2, true)}
+    ${field('If you could only simulate ONE aspect of your idea today, what would it be?', values.sim3)}
+  </div>
+
+  <hr class="divider" data-label="Reflection">
+
+  <!-- Step 4 -->
+  <div class="section">
+    <div class="section-label">Step 4 — Reflect</div>
+    <div class="section-title">Discussion questions</div>
+    <p class="section-desc">Questions your group discussed:</p>
+
+    <div class="checklist">
+      ${checks.map(c => `
+      <div class="check-item">
+        <span class="check-sym">${c.checked ? '☑' : '☐'}</span>
+        <span class="check-label-text">${escapeHtml(c.label)}</span>
+      </div>`).join('')}
+    </div>
+
+    ${field('Discussion notes', values.discussion, true)}
+    ${field('Confidence / excitement about this simulation approach', ratingLabel)}
+  </div>
+
+  <hr class="divider" data-label="Final Statement">
+
+  <!-- Step 5 -->
+  <div class="section">
+    <div class="section-label">Step 5 — Crystallize</div>
+    <div class="section-title">One-sentence summary</div>
+    ${field('We will simulate our artwork by…', values.pitch)}
+  </div>
+
+<script>
+  // Trigger print once fonts have loaded (or after 1.5s max)
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function() {
+      setTimeout(function() { window.print(); }, 200);
+    });
+  } else {
+    setTimeout(function() { window.print(); }, 1500);
+  }
+<\/script>
+</body>
+</html>`;
+
+    // Build escaped helper available in the outer scope for the template literal
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/\n/g, '<br>');
+    }
+
+    const win = window.open('', '_blank', 'width=920,height=800');
+    if (!win) {
+      alert('Pop-up blocked — please allow pop-ups for this page and try again.');
+      return;
+    }
+    win.document.write(html);
+    win.document.close();
+  }
+
   load();
-  // Re-grow all textareas after loading saved content
   document.querySelectorAll('textarea').forEach(ta => autoGrow(ta));
 </script>
 </body>
